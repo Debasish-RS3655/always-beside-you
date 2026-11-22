@@ -43,16 +43,24 @@ const SCENES = [
 ];
 
 function App() {
-  const [loaded, setLoaded] = useState(true)
+  const [loaded, setLoaded] = useState(false)
   const [showCharacter, setShowCharacter] = useState(false)
   const [canAdvance, setCanAdvance] = useState(false)
   const [currentScene, setCurrentScene] = useState(0)
 
   useEffect(() => {
-    SCENES.forEach((scene) => {
-      const backgroundImage = new window.Image()
-      backgroundImage.src = scene.background
-    })
+    const imageSources = [
+      ...new Set(SCENES.flatMap((scene) => [scene.background, scene.image]))
+    ]
+
+    Promise.all(
+      imageSources.map((source) => new Promise((resolve) => {
+        const image = new window.Image()
+        image.onload = () => resolve()
+        image.onerror = () => resolve()
+        image.src = source
+      }))
+    ).then(() => setLoaded(true))
   }, [])
 
   useEffect(() => {
@@ -81,14 +89,12 @@ function App() {
       </div>
 
       <div className="mobile-app">
-        {/* Waiting scene for video elements is disabled.
         {!loaded && (
           <div className="loader">
             <div className="spinner"></div>
             <p>please wait a moment my mam!</p>
           </div>
         )}
-        */}
 
         {SCENES.map((scene, index) => (
           <img

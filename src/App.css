@@ -33,7 +33,6 @@
   }
 }
 
-/* Video waiting scene is disabled.
 .loader {
   position: absolute;
   inset: 0;
@@ -60,7 +59,6 @@
     transform: rotate(360deg);
   }
 }
-*/
 
 /* Video scenes are disabled.
 .bg-video {

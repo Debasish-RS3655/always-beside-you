@@ -49,6 +49,13 @@ function App() {
   const [currentScene, setCurrentScene] = useState(0)
 
   useEffect(() => {
+    SCENES.forEach((scene) => {
+      const backgroundImage = new window.Image()
+      backgroundImage.src = scene.background
+    })
+  }, [])
+
+  useEffect(() => {
     if (!loaded) return;
 
     setCanAdvance(false);
@@ -83,11 +90,14 @@ function App() {
         )}
         */}
 
-        <img
-          src={activeScene.background}
-          className={`bg-image ${(loaded && activeScene.bgType === 'image') ? 'visible' : 'hidden'}`}
-          alt="bg"
-        />
+        {SCENES.map((scene, index) => (
+          <img
+            key={scene.background}
+            src={scene.background}
+            className={`bg-image ${loaded && activeScene.bgType === 'image' && currentScene === index ? 'visible' : 'hidden'}`}
+            alt={`Scene background ${index}`}
+          />
+        ))}
 
         {/* Video scenes are disabled in the current app version.
         <video
